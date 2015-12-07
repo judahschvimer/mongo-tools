@@ -37,7 +37,7 @@ type OutputOptions struct {
 	NumParallelCollections   int    `long:"numParallelCollections" short:"j" description:"number of collections to restore in parallel (4 by default)" default:"4" default-mask:"-"`
 	NumInsertionWorkers      int    `long:"numInsertionWorkersPerCollection" description:"number of insert operations to run concurrently per collection (1 by default)" default:"1" default-mask:"-"`
 	StopOnError              bool   `long:"stopOnError" description:"stop restoring if an error is encountered on insert (off by default)"`
-	BypassDocumentValidation bool   `long:"bypassDocumentValidation" description:"Bypass Document Validation"`
+	BypassDocumentValidation bool   `long:"bypassDocumentValidation" description:"bypass document validation"`
 }
 
 // Name returns a human-readable group name for output options.
