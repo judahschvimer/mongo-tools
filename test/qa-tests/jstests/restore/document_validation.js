@@ -46,7 +46,7 @@
     assert.eq(0, testColl.getIndexes().length);
 
     // Create a document validator.
-    db.createCollection('test', {
+    testDB.createCollection('coll', {
         validator: { a: { $type: "string" } },
         validationLevel: 'strict',
         validationAction: 'error'
@@ -59,7 +59,7 @@
                 concat(getRestoreTarget(dumpTarget)).
                 concat(commonToolArgs)
     );
-    assert.eq(1, ret);
+    assert.eq(0, ret);
 
     // Make sure no data was inserted.
     assert.eq(0, testColl.count());
