@@ -100,14 +100,6 @@ func (restore *MongoRestore) ParseAndValidateOptions() error {
 		return fmt.Errorf("cannot use --restoreDbUsersAndRoles with the admin database")
 	}
 
-	if restore.OutputOptions.BypassDocumentValidation {
-		session, err := restore.SessionProvider.GetSession()
-		if err != nil {
-			return fmt.Errorf("error retrieving session to bypass document validation")
-		}
-		session.SetBypassValidation(true)
-	}
-
 	var err error
 	restore.isMongos, err = restore.SessionProvider.IsMongos()
 	if err != nil {
@@ -180,6 +172,15 @@ func (restore *MongoRestore) Restore() error {
 	if err != nil {
 		log.Logf(log.DebugLow, "got error from options parsing: %v", err)
 		return err
+	}
+
+	if restore.OutputOptions.BypassDocumentValidation {
+		session, err := restore.SessionProvider.GetSession()
+		defer session.Close()
+		if err != nil {
+			return fmt.Errorf("error retrieving session to bypass document validation")
+		}
+		session.SetBypassValidation(true)
 	}
 
 	// Build up all intents to be restored
