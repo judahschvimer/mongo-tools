@@ -404,7 +404,7 @@ func (imp *MongoImport) configureSession(session *mgo.Session) error {
 		return fmt.Errorf("write concern error: %v", err)
 	}
 	session.SetSafe(sessionSafety)
-	if MongoImport.IngestOptions.BypassDocumentValidation {
+	if imp.IngestOptions.BypassDocumentValidation {
 		session.SetBypassValidation(true)
 	}
 	return nil
