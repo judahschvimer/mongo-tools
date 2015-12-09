@@ -26,7 +26,7 @@
     // Sanity check the data was inserted.
     assert.eq(15, testColl.count());
 
-    // Dump the data.
+    // Export the data.
     var ret = toolTest.runTool.apply(
             toolTest,
             ['export',
