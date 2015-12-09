@@ -27,7 +27,7 @@
         testColl.insert({ a: i });
     }
 
-    // Sanity check the data was inserted
+    // Sanity check the data was inserted.
     assert.eq(15, testColl.count());
 
     // Dump the data.

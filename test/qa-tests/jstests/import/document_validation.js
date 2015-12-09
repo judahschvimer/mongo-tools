@@ -23,7 +23,7 @@
         testColl.insert({ a: i });
     }
 
-    // Sanity check the data was inserted
+    // Sanity check the data was inserted.
     assert.eq(15, testColl.count());
 
     // Dump the data.
@@ -50,7 +50,7 @@
         validationAction: 'error'
     });
 
-    // Restore the data with document validation turned on.
+    // Import the data with document validation turned on.
     ret = toolTest.runTool.apply(
             toolTest,
             ['import',
@@ -76,7 +76,7 @@
         validationAction: 'error'
     });
 
-    // Restore the data while bypassing document validation.
+    // Import the data while bypassing document validation.
     ret = toolTest.runTool.apply(
             toolTest,
             ['import',
@@ -87,7 +87,7 @@
     );
     assert.eq(0, ret);
 
-    // Make sure the data was restored correctly.
+    // Make sure the data was imported correctly.
     assert.eq(15, testColl.count());
 
     // Success
