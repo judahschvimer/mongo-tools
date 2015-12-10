@@ -199,8 +199,8 @@ func (restore *MongoRestore) RestoreCollectionToDB(dbName, colName string,
 	if err != nil {
 		return int64(0), fmt.Errorf("error establishing connection: %v", err)
 	}
-	session.SetSafe(restore.safety)
 	defer session.Close()
+	restore.configureSession(session)
 
 	collection := session.DB(dbName).C(colName)
 

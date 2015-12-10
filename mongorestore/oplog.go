@@ -61,6 +61,7 @@ func (restore *MongoRestore) RestoreOplog() error {
 		return fmt.Errorf("error establishing connection: %v", err)
 	}
 	defer session.Close()
+	restore.configureSession(session)
 
 	// To restore the oplog, we iterate over the oplog entries,
 	// filling up a buffer. Once the buffer reaches max document size,

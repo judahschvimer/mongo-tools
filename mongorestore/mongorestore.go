@@ -165,6 +165,18 @@ func (restore *MongoRestore) ParseAndValidateOptions() error {
 	return nil
 }
 
+// configureSession takes in a session and modifies it with properly configured
+// settings. It does the following configurations:
+//
+// 1. Sets session safety
+// 2. Sets bypass document validation if requested
+func (restore *MongoRestore) configureSession(session *mgo.Session) {
+	session.SetSafe(restore.safety)
+	if restore.OutputOptions.BypassDocumentValidation {
+		session.SetBypassValidation(true)
+	}
+}
+
 // Restore runs the mongorestore program.
 func (restore *MongoRestore) Restore() error {
 	var target archive.DirLike
@@ -172,15 +184,6 @@ func (restore *MongoRestore) Restore() error {
 	if err != nil {
 		log.Logf(log.DebugLow, "got error from options parsing: %v", err)
 		return err
-	}
-
-	if restore.OutputOptions.BypassDocumentValidation {
-		session, err := restore.SessionProvider.GetSession()
-		defer session.Close()
-		if err != nil {
-			return fmt.Errorf("error retrieving session to bypass document validation")
-		}
-		session.SetBypassValidation(true)
 	}
 
 	// Build up all intents to be restored

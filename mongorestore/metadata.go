@@ -153,6 +153,7 @@ func (restore *MongoRestore) CollectionExists(intent *intents.Intent) (bool, err
 			return false, fmt.Errorf("error establishing connection: %v", err)
 		}
 		defer session.Close()
+		restore.configureSession(session)
 		collections, err := session.DB(intent.DB).CollectionNames()
 		if err != nil {
 			return false, err
@@ -194,8 +195,9 @@ func (restore *MongoRestore) CreateIndexes(intent *intents.Intent, indexes []Ind
 	if err != nil {
 		return fmt.Errorf("error establishing connection: %v", err)
 	}
-	session.SetSafe(&mgo.Safe{})
 	defer session.Close()
+	restore.configureSession(session)
+	session.SetSafe(&mgo.Safe{})
 
 	// then attempt the createIndexes command
 	rawCommand := bson.D{
@@ -231,6 +233,7 @@ func (restore *MongoRestore) LegacyInsertIndex(intent *intents.Intent, index Ind
 		return fmt.Errorf("error establishing connection: %v", err)
 	}
 	defer session.Close()
+	restore.configureSession(session)
 
 	// overwrite safety to make sure we catch errors
 	session.SetSafe(&mgo.Safe{})
@@ -258,6 +261,7 @@ func (restore *MongoRestore) CreateCollection(intent *intents.Intent, options bs
 		return fmt.Errorf("error establishing connection: %v", err)
 	}
 	defer session.Close()
+	restore.configureSession(session)
 
 	res := bson.M{}
 	err = session.DB(intent.DB).Run(jsonCommand, &res)
@@ -306,6 +310,7 @@ func (restore *MongoRestore) RestoreUsersOrRoles(users, roles *intents.Intent) e
 		return fmt.Errorf("error establishing connection: %v", err)
 	}
 	defer session.Close()
+	restore.configureSession(session)
 
 	// For each of the users and roles intents:
 	//   build up the mergeArgs component of the _mergeAuthzCollections command
@@ -354,6 +359,7 @@ func (restore *MongoRestore) RestoreUsersOrRoles(users, roles *intents.Intent) e
 				return
 			}
 			defer session.Close()
+			restore.configureSession(session)
 			log.Logf(log.DebugHigh, "dropping temporary collection admin.%v", arg.tempCollectionName)
 			e = session.DB("admin").C(arg.tempCollectionName).DropCollection()
 			if e != nil {
@@ -520,6 +526,7 @@ func (restore *MongoRestore) DropCollection(intent *intents.Intent) error {
 		return fmt.Errorf("error establishing connection: %v", err)
 	}
 	defer session.Close()
+	restore.configureSession(session)
 	err = session.DB(intent.DB).C(intent.C).DropCollection()
 	if err != nil {
 		return fmt.Errorf("error dropping collection: %v", err)

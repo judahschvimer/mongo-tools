@@ -35,6 +35,7 @@ func TestCollectionExists(t *testing.T) {
 
 		Convey("and some test data in a server", func() {
 			session, err := restore.SessionProvider.GetSession()
+			restore.configureSession(session)
 			So(err, ShouldBeNil)
 			So(session.DB(ExistsDB).C("one").Insert(bson.M{}), ShouldBeNil)
 			So(session.DB(ExistsDB).C("two").Insert(bson.M{}), ShouldBeNil)
