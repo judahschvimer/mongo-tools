@@ -50,6 +50,9 @@
         validationAction: 'error'
     });
 
+    var r = testColl.insert({ a: 5 });
+    assert.eq(r.nInserted,0,"invalid documents should not be inserted");
+
     // Import the data with document validation turned on.
     ret = toolTest.runTool.apply(
             toolTest,
@@ -70,11 +73,14 @@
     assert.eq(0, testColl.getIndexes().length);
 
     // Create a document validator.
-    db.createCollection('test', {
+    testDB.createCollection('coll', {
         validator: { a: { $type: "string" } },
         validationLevel: 'strict',
         validationAction: 'error'
     });
+
+    r = testColl.insert({ a: 5 });
+    assert.eq(r.nInserted,0,"invalid documents should not be inserted");
 
     // Import the data while bypassing document validation.
     ret = toolTest.runTool.apply(
