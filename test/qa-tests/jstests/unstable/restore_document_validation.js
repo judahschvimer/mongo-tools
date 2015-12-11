@@ -38,7 +38,7 @@
     // sanity check the insertion worked
     assert.eq(1000, testDB.bar.count(), 'all documents should be inserted');
 
-    ret = toolTest.runTool.apply(
+    var ret = toolTest.runTool.apply(
             toolTest,
             ['dump','-v'].
                 concat(getDumpTarget(dumpTarget)).
@@ -64,7 +64,7 @@
     assert.eq(0, testDB.bar.count(), 'after the drop, no documents should be seen');
 
     // turn on validation
-    r = testDB.createCollection('bar', { validator:{ baz: { $exists: true } } });
+    var r = testDB.createCollection('bar', { validator:{ baz: { $exists: true } } });
     assert.eq(r, { ok: 1 }, 'create collection with validation should work');
 
     // test that it's working

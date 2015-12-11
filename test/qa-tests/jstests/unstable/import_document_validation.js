@@ -64,7 +64,7 @@
     assert.eq(0, testDB.bar.count(), 'after dropping the database, no documents should be seen');
 
     // turn on validation
-    r = testDB.createCollection('bar', { validator: { baz: { $exists: true } } });
+    var r = testDB.createCollection('bar', { validator: { baz: { $exists: true } } });
     assert.eq(r,{ ok: 1 }, 'create collection with validation works');
 
     // test that it's working
