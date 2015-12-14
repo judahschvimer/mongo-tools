@@ -188,7 +188,8 @@ func (self *SessionProvider) SetTags(tags bson.D) {
 func NewSessionProvider(opts options.ToolOptions) (*SessionProvider, error) {
 	// create the provider
 	provider := &SessionProvider{
-		readPreference: mgo.Primary,
+		readPreference:           mgo.Primary,
+		bypassDocumentValidation: false,
 	}
 
 	// finalize auth options, filling in missing passwords
